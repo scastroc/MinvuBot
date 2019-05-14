@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-expression');
 const { ConfirmPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
@@ -28,73 +25,64 @@ class BookingDialog extends CancelAndHelpDialog {
 
         this.initialDialogId = WATERFALL_DIALOG;
     }
-
-    /**
-     * If a destination city has not been provided, prompt for one.
-     */
+   
     async destinationStep(stepContext) {
-        const bookingDetails = stepContext.options;
+        const intentDetails = stepContext.options;
 
-        if (!bookingDetails.destination) {
+        if (!intentDetails.destination) {
             return await stepContext.prompt(TEXT_PROMPT, { prompt: 'To what city would you like to travel?' });
         } else {
-            return await stepContext.next(bookingDetails.destination);
+            return await stepContext.next(intentDetails.destination);
         }
     }
-
-    /**
-     * If an origin city has not been provided, prompt for one.
-     */
+    
     async originStep(stepContext) {
-        const bookingDetails = stepContext.options;
+        const intentDetails = stepContext.options;
 
-        // Capture the response to the previous step's prompt
-        bookingDetails.destination = stepContext.result;
-        if (!bookingDetails.origin) {
+        // Captura la respuesta a la solicitud del paso anterior
+        intentDetails.destination = stepContext.result;
+        if (!intentDetails.origin) {
             return await stepContext.prompt(TEXT_PROMPT, { prompt: 'From what city will you be travelling?' });
         } else {
-            return await stepContext.next(bookingDetails.origin);
+            return await stepContext.next(intentDetails.origin);
         }
     }
 
     /**
-     * If a travel date has not been provided, prompt for one.
-     * This will use the DATE_RESOLVER_DIALOG.
+     * Si no se ha proporcionado una fecha de viaje, solicite una.
+     * Esto usará el DATE_RESOLVER_DIALOG.
      */
     async travelDateStep(stepContext) {
-        const bookingDetails = stepContext.options;
+        const intentDetails = stepContext.options;
 
-        // Capture the results of the previous step
-        bookingDetails.origin = stepContext.result;
-        if (!bookingDetails.travelDate || this.isAmbiguous(bookingDetails.travelDate)) {
-            return await stepContext.beginDialog(DATE_RESOLVER_DIALOG, { date: bookingDetails.travelDate });
+        // Captura los resultados del paso anterior.
+        intentDetails.origin = stepContext.result;
+        if (!intentDetails.travelDate || this.isAmbiguous(intentDetails.travelDate)) {
+            return await stepContext.beginDialog(DATE_RESOLVER_DIALOG, { date: intentDetails.travelDate });
         } else {
-            return await stepContext.next(bookingDetails.travelDate);
+            return await stepContext.next(intentDetails.travelDate);
         }
     }
-
-    /**
-     * Confirm the information the user has provided.
-     */
+    
     async confirmStep(stepContext) {
-        const bookingDetails = stepContext.options;
+        const intentDetails = stepContext.options;
 
-        // Capture the results of the previous step
-        bookingDetails.travelDate = stepContext.result;
-        const msg = `Please confirm, I have you traveling to: ${ bookingDetails.destination } from: ${ bookingDetails.origin } on: ${ bookingDetails.travelDate }.`;
+        // Captura los resultados del paso anterior.
+        intentDetails.travelDate = stepContext.result;
+        const msg = `Please confirm, I have you traveling to: ${ intentDetails.destination } from: ${ intentDetails.origin } on: ${ intentDetails.travelDate }.`;
 
-        // Offer a YES/NO prompt.
+        // Ofrezca un mensaje SÍ / NO.
         return await stepContext.prompt(CONFIRM_PROMPT, { prompt: msg });
     }
 
     /**
-     * Complete the interaction and end the dialog.
+     * Completa la interacción y finaliza el diálogo.
      */
     async finalStep(stepContext) {
         if (stepContext.result === true) {
-            const bookingDetails = stepContext.options;
+            const intentDetails = stepContext.options;
 
-            return await stepContext.endDialog(bookingDetails);
+            return await stepContext.endDialog(intentDetails);
         } else {
             return await stepContext.endDialog();
         }

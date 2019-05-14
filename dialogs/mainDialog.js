@@ -51,7 +51,7 @@ class MainDialog extends ComponentDialog {
      */
     async introStep(stepContext) {
         if (!process.env.LuisAppId || !process.env.LuisAPIKey || !process.env.LuisAPIHostName) {
-            await stepContext.context.sendActivity('NOTE: LUIS is not configured. To enable all capabilities, add `LuisAppId`, `LuisAPIKey` and `LuisAPIHostName` to the .env file.');
+            await stepContext.context.sendActivity('NOTA: LUIS no está configurado. Para habilitar todas las capacidades, agregue `LuisAppId`,` LuisAPIKey` y `LuisAPIHostName` al archivo .env.');
             return await stepContext.next();
         }
 

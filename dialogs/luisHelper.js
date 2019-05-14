@@ -22,14 +22,15 @@ class LuisHelper {
 
             // Esto recupera el intent con mayor porcentaje de exactitud.
             const intent = LuisRecognizer.topIntent(recognizerResult);
+
             // Se almacena  resultado de la intent
             intentDetails.intent = intent;
 
-            console.log(recognizerResult.intents[0].score + ': intent score');
+            /* console.log(recognizerResult.intents[0].score + ': intent score');
             console.log(recognizerResult.alteredText + ': altered text');
             console.log(recognizerResult.entities + ': entities');
             console.log(recognizerResult.text + ': text');
-            console.log(LuisRecognizer.topIntent(recognizerResult) + ': top intent');
+            console.log(LuisRecognizer.topIntent(recognizerResult) + ': top intent'); */
 
             if (intent === 'Book_flight') {
                 // Necesitamos obtener el resultado del LUIS JSON que en cada nivel devuelve un array
@@ -41,7 +42,7 @@ class LuisHelper {
             }
             // Intent de Arriendo.
             if (intent === 'arriendo') {
-                intentDetails.ahorro = LuisHelper.parseCompositeEntity(recognizerResult);
+                intentDetails.ahorro = LuisHelper.parseCompositeEntity(recognizerResult, 'Subsidio', 'Cuanto');
 
                 //intentDetails.postulacion = LuisHelper.parseDatetimeEntity(recognizerResult);
 

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 const { ActivityHandler } = require('botbuilder');
 
 class DialogBot extends ActivityHandler {
@@ -30,19 +27,19 @@ class DialogBot extends ActivityHandler {
         this.onMessage(async (context, next) => {
             this.logger.log('Running dialog with Message Activity.');
 
-            // Run the Dialog with the new message Activity.
+            // Ejecutar el diálogo con el nuevo mensaje de actividad.
             await this.dialog.run(context, this.dialogState);
 
-            // By calling next() you ensure that the next BotHandler is run.
+            // Al llamar a next (), se asegura de que se ejecute el siguiente BotHandler.
             await next();
         });
 
         this.onDialog(async (context, next) => {
-            // Save any state changes. The load happened during the execution of the Dialog.
+            // Guardar cualquier cambio de estado. La carga ocurrió durante la ejecución del Diálogo.
             await this.conversationState.saveChanges(context, false);
             await this.userState.saveChanges(context, false);
 
-            // By calling next() you ensure that the next BotHandler is run.
+            // Al llamar a next (), se asegura de que se ejecute el siguiente BotHandler.
             await next();
         });
     }
