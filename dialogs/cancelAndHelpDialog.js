@@ -28,6 +28,8 @@ class CancelAndHelpDialog extends ComponentDialog {
         switch (text) {
         case 'help':
         case '?':
+        case 'ayuda':
+        case 'ayudame':
             await innerDc.context.sendActivity('[ Formula una pregunta o ingresa al menu de opciones para ver la informacion de subsidios. ]');
             return { status: DialogTurnStatus.waiting };
         case 'cancel':
