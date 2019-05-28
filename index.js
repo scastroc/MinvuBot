@@ -32,9 +32,16 @@ let conversationState, userState;
 
 // PRECAUCIÓN: el almacenamiento de memoria utilizado aquí es solo para la depuración del bot local. Cuando el bot
 // se reinicia, todo lo almacenado en la memoria desaparecerá.
-const memoryStorage = new MemoryStorage();
+/* const memoryStorage = new MemoryStorage();
 conversationState = new ConversationState(memoryStorage);
-userState = new UserState(memoryStorage);
+userState = new UserState(memoryStorage); */
+
+var storage = new CosmosDbStorage({
+    serviceEndpoint: process.env.DB_SERVICE_ENDPOINT, 
+    authKey: process.env.AUTH_KEY, 
+    databaseId: process.env.DATABASE,
+    collectionId: process.env.COLLECTION
+}) 
 
 const logger = console;
 
